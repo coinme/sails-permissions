@@ -69,11 +69,18 @@ class Permissions extends Marlinspike {
   }
 
   installModelOwnership () {
+    sails.log.silly(`installModelOwnership() ${JSON.stringify(this.sails.models)} ${JSON.stringify(this.sails.config.models)}`);
     var models = this.sails.models
-    if (this.sails.config.models.autoCreatedBy === false) return
+    if (this.sails.config.models.autoCreatedBy === false) {
+      sails.log.silly(`installModelOwnership() (ABORT) (this.sails.config.models.autoCreatedBy === false)`);
+      return;
+    }
 
     _.each(models, model => {
-      if (model.autoCreatedBy === false) return
+      if (model.autoCreatedBy === false) {
+        sails.log.silly(`installModelOwnership() (ABORT) (model.autoCreatedBy === false)`);
+        return;
+      }
 
       _.defaults(model.attributes, {
         createdBy: {
@@ -85,6 +92,8 @@ class Permissions extends Marlinspike {
           index: true
         }
       })
+
+      sails.log.silly(`installModelOwnership() (attach) ${JSON.stringify(model.attributes)}`);
     })
   }
 
