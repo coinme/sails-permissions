@@ -90,7 +90,8 @@ var Permissions = (function (_Marlinspike) {
   }, {
     key: 'installModelOwnership',
     value: function installModelOwnership() {
-      sails.log.silly('installModelOwnership() ' + JSON.stringify(this.sails.models) + ' ' + JSON.stringify(this.sails.config.models));
+      // sails.log.silly(`installModelOwnership() ${JSON.stringify(this.sails.models)} ${JSON.stringify(this.sails.config.models)}`);
+
       var models = this.sails.models;
       if (this.sails.config.models.autoCreatedBy === false) {
         sails.log.silly('installModelOwnership() (ABORT) (this.sails.config.models.autoCreatedBy === false)');
@@ -114,7 +115,7 @@ var Permissions = (function (_Marlinspike) {
           }
         });
 
-        sails.log.silly('installModelOwnership() (attach) ' + JSON.stringify(model.attributes));
+        // sails.log.silly(`installModelOwnership() (attach) ${JSON.stringify(model.attributes)}`);
       });
     }
 
