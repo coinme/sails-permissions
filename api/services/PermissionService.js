@@ -1,13 +1,18 @@
-var _ = require('lodash');
+"use strict";
 
-var methodMap = {
-  POST: 'create',
-  GET: 'read',
-  PUT: 'update',
-  DELETE: 'delete'
+/*global PermissionService*/
+/*global Permission*/
+
+const _ = require('lodash');
+
+const methodMap = {
+    POST: 'create',
+    GET: 'read',
+    PUT: 'update',
+    DELETE: 'delete'
 };
 
-var wlFilter = require('waterline-criteria');
+const wlFilter = require('waterline-criteria');
 
 module.exports = {
 
@@ -43,8 +48,6 @@ module.exports = {
    * TODO this will be less expensive when waterline supports a caching layer
    */
   findTargetObjects: function(req) {
-
-
     // handle add/remove routes that have :parentid as the primary key field
     var originalId;
     if (req.params.parentid) {

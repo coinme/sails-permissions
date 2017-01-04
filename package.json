@@ -31,6 +31,9 @@
     "tracking"
   ],
   "author": "Travis Webb <me@traviswebb.com>",
+  "contributors": [
+    "Michael Smyers <michael@coinme.com>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/tjwebb/sails-permissions/issues"
