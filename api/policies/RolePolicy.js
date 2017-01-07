@@ -1,8 +1,9 @@
 "use strict";
+
 /*global PermissionService*/
 /*global ModelService*/
-import _ from "lodash";
 
+const _ = require("lodash");
 
 /**
  * RolePolicy
@@ -25,6 +26,7 @@ module.exports = function(req, res, next) {
     if (!_.isEmpty(relations.role)) {
         return next();
     }
+
     if (req.options.unknownModel) {
         return next();
     }
@@ -35,7 +37,7 @@ module.exports = function(req, res, next) {
      * We don't want to take this same course of action for an update or delete action, we would prefer to fail the entire request.
      * There is no notion of 'create' for an owner permission, so it is not relevant here.
      */
-    if (!_.contains(['update', 'delete'], action) && req.options.modelDefinition.attributes.owner) {
+    if (!_.includes(['update', 'delete'], action) && req.options.modelDefinition.attributes.owner) {
         // Some parsing must happen on the query down the line,
         // as req.query has no impact on the results from PermissionService.findTargetObjects.
         // I had to look at the actionUtil parseCriteria method to see where to augment the criteria
@@ -57,16 +59,17 @@ module.exports = function(req, res, next) {
             return PermissionService.isAllowedToPerformAction(objects, req.user, action, ModelService.getTargetModelName(req), req.body)
                 .then(function(hasUserPermissions) {
                     if (hasUserPermissions) {
-                        return next();
-                    }
-                    if (PermissionService.hasForeignObjects(objects, req.user)) {
-                        return res.send(403, {
+                        next();
+                    } else if (PermissionService.hasForeignObjects(objects, req.user)) {
+                        res.send(403, {
                             error: 'Cannot perform action [' + action + '] on foreign object'
                         });
+                    } else {
+                        next();
                     }
-                    next();
-                });
 
+                    return null;
+                });
         })
         .catch(next);
 };

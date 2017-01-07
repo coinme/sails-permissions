@@ -1,10 +1,6 @@
 "use strict";
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _lodash = require('lodash');
-
-var _lodash2 = _interopRequireDefault(_lodash);
+var _ = require("lodash");
 
 var pluralize = require('pluralize');
 
@@ -15,11 +11,11 @@ module.exports = {
   getTargetModelName: function getTargetModelName(req) {
     // TODO there has to be a more sails-y way to do this without including external modules
 
-    if (_lodash2['default'].isString(req.options.alias)) {
+    if (_.isString(req.options.alias)) {
       sails.log.silly('singularize', req.options.alias, 'to use as target model');
 
       return pluralize.singular(req.options.alias);
-    } else if (_lodash2['default'].isString(req.options.model)) {
+    } else if (_.isString(req.options.model)) {
 
       return req.options.model;
     } else {

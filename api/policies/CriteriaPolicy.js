@@ -1,11 +1,13 @@
+"use strict";
+
 /**
  * CriteriaPolicy
  * @depends PermissionPolicy
  *
  * Verify that the User fulfills permission 'where' conditions and attribute blacklist restrictions
  */
-var wlFilter = require('waterline-criteria');
-import _ from 'lodash'
+const wlFilter = require('waterline-criteria');
+const _ = require('lodash');
 
 module.exports = function(req, res, next) {
   var permissions = req.permissions;
@@ -30,7 +32,7 @@ module.exports = function(req, res, next) {
 
 
   // set up response filters if we are not mutating an existing object
-  if (!_.contains(['update', 'delete'], action)) {
+  if (!_.includes(['update', 'delete'], action)) {
 
     // get all of the where clauses and blacklists into one flat array
     // if a permission has no criteria then it is always true

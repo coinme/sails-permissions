@@ -1,3 +1,7 @@
+"use strict";
+
+/*global PermissionService*/
+
 /**
  * PermissionPolicy
  * @depends OwnerPolicy
@@ -18,8 +22,6 @@
  * @param {Object}   res
  * @param {Function} next
  */
-'use strict';
-
 module.exports = function (req, res, next) {
   var options = {
     model: req.model,
@@ -32,6 +34,7 @@ module.exports = function (req, res, next) {
   }
 
   PermissionService.findModelPermissions(options).then(function (permissions) {
+
     sails.log.silly('PermissionPolicy:', permissions.length, 'permissions grant', req.method, 'on', req.model.name, 'for', req.user.username);
 
     if (!permissions || permissions.length === 0) {

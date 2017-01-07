@@ -1,23 +1,18 @@
+"use strict";
+
 /**
  * CriteriaPolicy
  * @depends PermissionPolicy
  *
  * Verify that the User fulfills permission 'where' conditions and attribute blacklist restrictions
  */
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _lodash = require('lodash');
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
 var wlFilter = require('waterline-criteria');
+var _ = require('lodash');
 
 module.exports = function (req, res, next) {
   var permissions = req.permissions;
 
-  if (_lodash2['default'].isEmpty(permissions)) {
+  if (_.isEmpty(permissions)) {
     return next();
   }
 
@@ -36,11 +31,11 @@ module.exports = function (req, res, next) {
   }
 
   // set up response filters if we are not mutating an existing object
-  if (!_lodash2['default'].contains(['update', 'delete'], action)) {
+  if (!_.includes(['update', 'delete'], action)) {
 
     // get all of the where clauses and blacklists into one flat array
     // if a permission has no criteria then it is always true
-    var criteria = _lodash2['default'].compact(_lodash2['default'].flatten(_lodash2['default'].map(_lodash2['default'].pluck(permissions, 'criteria'), function (c) {
+    var criteria = _.compact(_.flatten(_.map(_.pluck(permissions, 'criteria'), function (c) {
       if (c.length == 0) {
         return [{ where: {} }];
       }
@@ -73,7 +68,7 @@ module.exports = function (req, res, next) {
 function bindResponsePolicy(req, res, criteria) {
   res._ok = res.ok;
 
-  res.ok = _lodash2['default'].bind(responsePolicy, {
+  res.ok = _.bind(responsePolicy, {
     req: req,
     res: res
   }, criteria);
@@ -84,7 +79,7 @@ function responsePolicy(criteria, _data, options) {
   var res = this.res;
   var user = req.owner;
   var method = PermissionService.getMethod(req);
-  var isResponseArray = _lodash2['default'].isArray(_data);
+  var isResponseArray = _.isArray(_data);
 
   var data = isResponseArray ? _data : [_data];
 

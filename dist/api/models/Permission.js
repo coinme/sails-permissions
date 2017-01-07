@@ -1,17 +1,13 @@
+"use strict";
+
+var _ = require('lodash');
+
 /**
  * @module Permission
  *
  * @description
  *   The actions a Role is granted on a particular Model and its attributes
  */
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _lodash = require('lodash');
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
 module.exports = {
   autoCreatedBy: false,
 
@@ -79,8 +75,8 @@ module.exports = {
       next(new Error('Creating a Permission with relation=owner and action=create is tautological'));
     }
 
-    if (permission.action === 'delete' && _lodash2['default'].filter(permission.criteria, function (criteria) {
-      return !_lodash2['default'].isEmpty(criteria.blacklist);
+    if (permission.action === 'delete' && _.filter(permission.criteria, function (criteria) {
+      return !_.isEmpty(criteria.blacklist);
     }).length) {
       next(new Error('Creating a Permission with an attribute blacklist is not allowed when action=delete'));
     }

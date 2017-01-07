@@ -1,3 +1,7 @@
+"use strict";
+
+/*global PermissionService*/
+
 /**
  * PermissionPolicy
  * @depends OwnerPolicy
@@ -18,29 +22,31 @@
  * @param {Object}   res
  * @param {Function} next
  */
-module.exports = function (req, res, next) {
-  var options = {
-    model: req.model,
-    method: req.method,
-    user: req.user
-  };
+module.exports = function(req, res, next) {
+    const options = {
+        model: req.model,
+        method: req.method,
+        user: req.user
+    };
 
-  if (req.options.unknownModel) {
-    return next();
-  }
+    if (req.options.unknownModel) {
+        return next();
+    }
 
-  PermissionService
-    .findModelPermissions(options)
-    .then(function (permissions) {
-      sails.log.silly('PermissionPolicy:', permissions.length, 'permissions grant',
-          req.method, 'on', req.model.name, 'for', req.user.username);
+    PermissionService
+        .findModelPermissions(options)
+        .then(function(permissions) {
+            sails.log.silly('PermissionPolicy:', permissions.length, 'permissions grant',
+                req.method, 'on', req.model.name, 'for', req.user.username);
 
-      if (!permissions || permissions.length === 0) {
-        return res.send(403, { error: PermissionService.getErrorMessage(options) });
-      }
+            if (!permissions || permissions.length === 0) {
+                res.send(403, {error: PermissionService.getErrorMessage(options)});
+            } else {
+                req.permissions = permissions;
 
-      req.permissions = permissions;
+                next();
+            }
 
-      next();
-    });
+            return null;
+        });
 };

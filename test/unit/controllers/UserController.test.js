@@ -69,7 +69,7 @@ describe('User Controller', function() {
                   })
                   .then(function(role) {
                     assert.equal(user.username, 'abouttoberemoveduser');
-                    assert(_.contains(_.pluck(role.users, 'id'), user.id));
+                    assert(_.includes(_.pluck(role.users, 'id'), user.id));
 
                     request(sails.hooks.http.app)
                       .delete('/role/' + role.id + '/users/' + user.id)
