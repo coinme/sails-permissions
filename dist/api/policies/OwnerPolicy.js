@@ -32,3 +32,4 @@ module.exports = function OwnerPolicy(req, res, next) {
   //sails.log.verbose('OwnerPolicy req.model', req.model);
   next();
 };
+//# sourceMappingURL=OwnerPolicy.js.map

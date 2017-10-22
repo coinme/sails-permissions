@@ -128,49 +128,25 @@ var Permissions = (function (_Marlinspike) {
                 _this2.sails.hooks.permissions._modelCache = _.keyBy(models, 'identity');
 
                 return require(path.resolve(fixturesPath, 'role')).create();
-            }).then(function callee$2$0(roles) {
-                var userModel, admin, user;
-                return regeneratorRuntime.async(function callee$2$0$(context$3$0) {
-                    while (1) switch (context$3$0.prev = context$3$0.next) {
-                        case 0:
-                            this.roles = roles;
-
-                            userModel = _.find(this.models, { name: 'User' });
-                            admin = null;
-
-                            if (!sails.config.permissions.createAdminUser) {
-                                context$3$0.next = 15;
-                                break;
-                            }
-
-                            context$3$0.next = 6;
-                            return regeneratorRuntime.awrap(require(path.resolve(fixturesPath, 'user')).create(this.roles, userModel));
-
-                        case 6:
-                            context$3$0.next = 8;
-                            return regeneratorRuntime.awrap(sails.models.user.findOne({ email: this.sails.config.permissions.adminEmail }));
-
-                        case 8:
-                            user = context$3$0.sent;
-
-                            this.sails.log('sails-permissions: created admin user:', user);
-                            user.createdBy = user.id;
-                            user.owner = user.id;
-
-                            context$3$0.next = 14;
-                            return regeneratorRuntime.awrap(user.save());
-
-                        case 14:
-                            admin = context$3$0.sent;
-
-                        case 15:
-                            return context$3$0.abrupt('return', require(path.resolve(fixturesPath, 'permission')).create(this.roles, this.models, admin, this.sails.config.permissions));
-
-                        case 16:
-                        case 'end':
-                            return context$3$0.stop();
-                    }
-                }, null, _this2);
+            }).then(function (roles) {
+                _this2.roles = roles;
+                var userModel = _.find(_this2.models, { name: 'User' });
+                return require(path.resolve(fixturesPath, 'user')).create(_this2.roles, userModel);
+            }).then(function () {
+                if (sails.config.permissions.autoCreateAdmin) {
+                    return Promise.resolve().then(function () {
+                        return sails.models.user.findOne({ email: _this2.sails.config.permissions.adminEmail });
+                    }).then(function (user) {
+                        _this2.sails.log('sails-permissions: created admin user:', user);
+                        user.createdBy = user.id;
+                        user.owner = user.id;
+                        return user.save();
+                    });
+                } else {
+                    return null;
+                }
+            }).then(function (admin) {
+                return require(path.resolve(fixturesPath, 'permission')).create(_this2.roles, _this2.models, admin, _this2.sails.config.permissions);
             })['catch'](function (error) {
                 _this2.sails.log.error(error);
             });
@@ -187,4 +163,4 @@ var Permissions = (function (_Marlinspike) {
 
 exports['default'] = Marlinspike.createSailsHook(Permissions);
 module.exports = exports['default'];
-// default false
+//# sourceMappingURL=index.js.map

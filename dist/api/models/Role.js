@@ -36,3 +36,4 @@ module.exports = {
     }
   }
 };
+//# sourceMappingURL=Role.js.map

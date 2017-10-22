@@ -92,3 +92,4 @@ module.exports = {
     next();
   }]
 };
+//# sourceMappingURL=Permission.js.map

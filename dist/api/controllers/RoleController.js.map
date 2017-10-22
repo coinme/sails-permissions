@@ -1,0 +1,1 @@
+{"version":3,"sources":["controllers/RoleController.js"],"names":[],"mappings":";;;;;;;;;AAOA,MAAM,CAAC,OAAO,GAAG,EAEhB,CAAC","file":"RoleController.js","sourcesContent":["/**\n * RoleController\n *\n * @description :: Server-side logic for managing roles\n * @help        :: See http://links.sailsjs.org/docs/controllers\n */\n\nmodule.exports = {\n\t\n};\n\n"]}

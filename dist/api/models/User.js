@@ -57,3 +57,4 @@ _.merge(exports, {
         });
     }]
 });
+//# sourceMappingURL=User.js.map

@@ -70,3 +70,4 @@ module.exports = function (req, res, next) {
         });
     })["catch"](next);
 };
+//# sourceMappingURL=RolePolicy.js.map

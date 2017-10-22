@@ -42,3 +42,4 @@ module.exports = function ModelPolicy(req, res, next) {
     next();
   })['catch'](next);
 };
+//# sourceMappingURL=ModelPolicy.js.map
