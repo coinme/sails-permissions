@@ -187,3 +187,4 @@ var Permissions = (function (_Marlinspike) {
 
 exports['default'] = Marlinspike.createSailsHook(Permissions);
 module.exports = exports['default'];
+// default false
