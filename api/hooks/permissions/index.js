@@ -119,23 +119,24 @@ class Permissions extends Marlinspike {
 
                 return require(path.resolve(fixturesPath, 'role')).create()
             })
-            .then(roles => {
+            .then((async (roles) => {
                 this.roles = roles;
-                var userModel = _.find(this.models, {name: 'User'});
-                return require(path.resolve(fixturesPath, 'user')).create(this.roles, userModel)
-            })
-            .then(() => {
-                return sails.models.user.findOne({email: this.sails.config.permissions.adminEmail})
-            })
-            .then(user => {
-                this.sails.log('sails-permissions: created admin user:', user);
-                user.createdBy = user.id;
-                user.owner = user.id;
-                return user.save()
-            })
-            .then(admin => {
+
+                let userModel = _.find(this.models, {name: 'User'});
+                let admin = null;
+
+                if (sails.config.permissions.createAdminUser) { // default false
+                    await require(path.resolve(fixturesPath, 'user')).create(this.roles, userModel);
+                    let user = await sails.models.user.findOne({email: this.sails.config.permissions.adminEmail});
+                    this.sails.log('sails-permissions: created admin user:', user);
+                    user.createdBy = user.id;
+                    user.owner = user.id;
+
+                    admin = await user.save();
+                }
+
                 return require(path.resolve(fixturesPath, 'permission')).create(this.roles, this.models, admin, this.sails.config.permissions);
-            })
+            }))
             .catch(error => {
                 this.sails.log.error(error)
             })
