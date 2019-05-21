@@ -19,3 +19,4 @@ module.exports = {
     }
   }
 };
+//# sourceMappingURL=SecurityLog.js.map

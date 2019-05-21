@@ -32,3 +32,4 @@ function sanitizeRequestUrl(req) {
 
   return requestUrl.replace(/(password=).*?(&|$)/ig, '$1<hidden>$2');
 }
+//# sourceMappingURL=AuditPolicy.js.map

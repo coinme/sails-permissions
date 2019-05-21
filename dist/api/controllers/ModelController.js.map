@@ -1,0 +1,1 @@
+{"version":3,"sources":["controllers/ModelController.js"],"names":[],"mappings":";;;;;;;;;AAOA,MAAM,CAAC,OAAO,GAAG,EAEhB,CAAC","file":"ModelController.js","sourcesContent":["/**\n * ModelController\n *\n * @description :: Server-side logic for managing models\n * @help        :: See http://links.sailsjs.org/docs/controllers\n */\n\nmodule.exports = {\n\t\n};\n\n"]}

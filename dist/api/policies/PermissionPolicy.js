@@ -47,3 +47,4 @@ module.exports = function (req, res, next) {
         return null;
     });
 };
+//# sourceMappingURL=PermissionPolicy.js.map

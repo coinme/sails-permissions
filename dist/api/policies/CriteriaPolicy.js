@@ -119,3 +119,4 @@ function responsePolicy(criteria, _data, options) {
     res._ok(permitted[0], options);
   }
 }
+//# sourceMappingURL=CriteriaPolicy.js.map

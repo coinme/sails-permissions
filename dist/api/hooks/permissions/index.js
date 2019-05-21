@@ -164,3 +164,4 @@ var Permissions = (function (_Marlinspike) {
 
 exports['default'] = Marlinspike.createSailsHook(Permissions);
 module.exports = exports['default'];
+//# sourceMappingURL=index.js.map
