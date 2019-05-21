@@ -121,24 +121,32 @@ class Permissions extends Marlinspike {
             })
             .then(roles => {
                 this.roles = roles;
-                var userModel = _.find(this.models, {name: 'User'});
-                return require(path.resolve(fixturesPath, 'user')).create(this.roles, userModel)
-            })
-            .then(() => {
-                return sails.models.user.findOne({email: this.sails.config.permissions.adminEmail})
-            })
-            .then(user => {
-                this.sails.log('sails-permissions: created admin user:', user);
-                user.createdBy = user.id;
-                user.owner = user.id;
-                return user.save()
-            })
-            .then(admin => {
-                return require(path.resolve(fixturesPath, 'permission')).create(this.roles, this.models, admin, this.sails.config.permissions);
+
+                if (!this.sails.config.permissions.autoCreateAdmin) {
+                    return;
+                }
+
+                return Promise.resolve()
+                    .then(() => {
+                        var userModel = _.find(this.models, {name: 'User'});
+                        return require(path.resolve(fixturesPath, 'user')).create(this.roles, userModel)
+                    })
+                    .then(() => {
+                        return sails.models.user.findOne({email: this.sails.config.permissions.adminEmail})
+                    })
+                    .then(user => {
+                        this.sails.log('sails-permissions: created admin user:', user);
+                        user.createdBy = user.id;
+                        user.owner = user.id;
+                        return user.save()
+                    })
+                    .then(admin => {
+                        return require(path.resolve(fixturesPath, 'permission')).create(this.roles, this.models, admin, this.sails.config.permissions);
+                    });
             })
             .catch(error => {
                 this.sails.log.error(error)
-            })
+            });
     }
 
     validateDependencies() {

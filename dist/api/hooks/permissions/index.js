@@ -130,17 +130,24 @@ var Permissions = (function (_Marlinspike) {
                 return require(path.resolve(fixturesPath, 'role')).create();
             }).then(function (roles) {
                 _this2.roles = roles;
-                var userModel = _.find(_this2.models, { name: 'User' });
-                return require(path.resolve(fixturesPath, 'user')).create(_this2.roles, userModel);
-            }).then(function () {
-                return sails.models.user.findOne({ email: _this2.sails.config.permissions.adminEmail });
-            }).then(function (user) {
-                _this2.sails.log('sails-permissions: created admin user:', user);
-                user.createdBy = user.id;
-                user.owner = user.id;
-                return user.save();
-            }).then(function (admin) {
-                return require(path.resolve(fixturesPath, 'permission')).create(_this2.roles, _this2.models, admin, _this2.sails.config.permissions);
+
+                if (!_this2.sails.config.permissions.autoCreateAdmin) {
+                    return;
+                }
+
+                return Promise.resolve().then(function () {
+                    var userModel = _.find(_this2.models, { name: 'User' });
+                    return require(path.resolve(fixturesPath, 'user')).create(_this2.roles, userModel);
+                }).then(function () {
+                    return sails.models.user.findOne({ email: _this2.sails.config.permissions.adminEmail });
+                }).then(function (user) {
+                    _this2.sails.log('sails-permissions: created admin user:', user);
+                    user.createdBy = user.id;
+                    user.owner = user.id;
+                    return user.save();
+                }).then(function (admin) {
+                    return require(path.resolve(fixturesPath, 'permission')).create(_this2.roles, _this2.models, admin, _this2.sails.config.permissions);
+                });
             })['catch'](function (error) {
                 _this2.sails.log.error(error);
             });
